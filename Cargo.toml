@@ -1,0 +1,43 @@
+[package]
+name = "invarch-xcm-builder"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+frame-support = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.29" }
+frame-system = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.29" }
+sp-core = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.29" }
+sp-io = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.29" }
+
+pallet-xcm = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.29" }
+polkadot-parachain = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.29" }
+polkadot-runtime-common = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.29" }
+xcm = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.29" }
+xcm-builder = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.29" }
+xcm-executor = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.29" }
+
+pallet-inv4 = { path = "../InvArch-Pallet-Library/INV4/pallet-inv4", default-features = false }
+
+codec = { package = "parity-scale-codec", version = "3.0.0", default-features = false }
+
+log = { version = "0.4.14", default-features = false }
+
+[features]
+default = ["std"]
+
+std = [
+    "log/std",
+    "codec/std",
+    "frame-support/std",
+    "frame-system/std",
+    "pallet-xcm/std",
+    "polkadot-parachain/std",
+    "polkadot-runtime-common/std",
+    "xcm/std",
+    "xcm-builder/std",
+    "xcm-executor/std",
+    "pallet-inv4/std",
+    "sp-core/std",
+    "sp-io/std"
+]
