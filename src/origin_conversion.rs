@@ -62,7 +62,7 @@ pub mod inv4_origin_conversion {
             + TryInto<INV4Origin<IpId, AccountId>, Error = Origin::PalletsOrigin>,
     {
         fn convert(o: Origin) -> Result<MultiLocation, Origin> {
-            let result = o.try_with_caller(|caller| match caller.clone().try_into() {
+            o.try_with_caller(|caller| match caller.clone().try_into() {
                 Ok(SystemRawOrigin::Signed(who)) => Ok(Junction::AccountId32 {
                     network: NetworkId::Any,
                     id: who.into(),
@@ -78,9 +78,7 @@ pub mod inv4_origin_conversion {
 
                     _ => Err(caller),
                 },
-            });
-
-            result
+            })
         }
     }
 }
