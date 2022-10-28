@@ -43,7 +43,7 @@ pub mod inv4_origin_conversion {
     use frame_support::traits::OriginTrait;
     use frame_system::RawOrigin as SystemRawOrigin;
     use pallet_inv4::INV4Origin;
-    use xcm::latest::{BodyId, BodyPart, Junction, Junctions, MultiLocation, NetworkId};
+    use xcm::latest::{BodyId, BodyPart, Junction, MultiLocation, NetworkId};
 
     pub struct ConvertSignedOrMultisig<Origin, IpId, AccountId>(
         core::marker::PhantomData<(Origin, IpId, AccountId)>,
@@ -58,8 +58,8 @@ pub mod inv4_origin_conversion {
     where
         Origin::PalletsOrigin: From<SystemRawOrigin<AccountId>>
             + TryInto<SystemRawOrigin<AccountId>, Error = Origin::PalletsOrigin>
-            + From<pallet_inv4::INV4Origin<IpId, AccountId>>
-            + TryInto<pallet_inv4::INV4Origin<IpId, AccountId>, Error = Origin::PalletsOrigin>,
+            + From<INV4Origin<IpId, AccountId>>
+            + TryInto<INV4Origin<IpId, AccountId>, Error = Origin::PalletsOrigin>,
     {
         fn convert(o: Origin) -> Result<MultiLocation, Origin> {
             let result = o.try_with_caller(|caller| match caller.clone().try_into() {
