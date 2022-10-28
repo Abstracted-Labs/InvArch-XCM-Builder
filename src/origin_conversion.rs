@@ -40,9 +40,10 @@ where
 pub mod inv4_origin_conversion {
     use core::fmt::Debug;
     use frame_support::sp_runtime::traits::AtLeast32BitUnsigned;
+    use frame_support::traits::OriginTrait;
     use frame_system::RawOrigin as SystemRawOrigin;
     use pallet_inv4::INV4Origin;
-    use xcm::latest::{BodyId, BodyPart, NetworkId};
+    use xcm::latest::{BodyId, BodyPart, Junction, Junctions, MultiLocation, NetworkId};
 
     pub struct ConvertSignedOrMultisig<Origin, IpId, AccountId>(
         core::marker::PhantomData<(Origin, IpId, AccountId)>,
