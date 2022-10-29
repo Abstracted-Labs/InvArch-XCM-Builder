@@ -38,11 +38,12 @@ where
 
 #[cfg(feature = "for-tinkernet")]
 pub mod inv4_origin_conversion {
+    use codec::Decode;
     use core::fmt::Debug;
     use frame_support::sp_runtime::traits::AtLeast32BitUnsigned;
     use frame_support::traits::OriginTrait;
     use frame_system::RawOrigin as SystemRawOrigin;
-    use pallet_inv4::INV4Origin;
+    use pallet_inv4::origin::{INV4Origin, MultisigInternalOrigin};
     use xcm::latest::{BodyId, BodyPart, Junction, MultiLocation, NetworkId};
 
     pub struct ConvertSignedOrMultisig<Origin, IpId, AccountId>(
@@ -52,7 +53,7 @@ pub mod inv4_origin_conversion {
     impl<
             Origin: OriginTrait + Clone + Debug,
             IpId: AtLeast32BitUnsigned + Into<u32>,
-            AccountId: Into<[u8; 32]>,
+            AccountId: Into<[u8; 32]> + Decode,
         > xcm_executor::traits::Convert<Origin, MultiLocation>
         for ConvertSignedOrMultisig<Origin, IpId, AccountId>
     where
@@ -70,11 +71,13 @@ pub mod inv4_origin_conversion {
                 .into()),
 
                 _ => match caller.clone().try_into() {
-                    Ok(pallet_inv4::INV4Origin::Multisig { id, .. }) => Ok(Junction::Plurality {
-                        id: BodyId::Index(id.into()),
-                        part: BodyPart::Voice,
+                    Ok(INV4Origin::Multisig(MultisigInternalOrigin { id, .. })) => {
+                        Ok(Junction::Plurality {
+                            id: BodyId::Index(id.into()),
+                            part: BodyPart::Voice,
+                        }
+                        .into())
                     }
-                    .into()),
 
                     _ => Err(caller),
                 },
