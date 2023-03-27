@@ -1,25 +1,35 @@
-use crate::derivers::ParachainPluralityAccountIdDeriver;
+use super::derivers::{
+    ParachainPalletGeneralIndexAccountIdDeriver, TinkernetMultisigAccountIdDeriver,
+};
 use core::marker::PhantomData;
-use xcm::latest::{Junction, Junctions, MultiLocation};
+use xcm::v2::{Junction, Junctions, MultiLocation};
 use xcm_executor::traits::Convert;
 
-pub struct PluralityAsAccountId<AccountId, PluralityDeriver>(
-    PhantomData<(AccountId, PluralityDeriver)>,
+pub struct PalletInstanceGeneralIndexAsAccountId<AccountId, Deriver>(
+    PhantomData<(AccountId, Deriver)>,
 );
 impl<
         AccountId: From<[u8; 32]> + Clone,
-        PluralityDeriver: ParachainPluralityAccountIdDeriver<AccountId>,
-    > Convert<MultiLocation, AccountId> for PluralityAsAccountId<AccountId, PluralityDeriver>
+        Deriver: ParachainPalletGeneralIndexAccountIdDeriver<AccountId>,
+    > Convert<MultiLocation, AccountId>
+    for PalletInstanceGeneralIndexAsAccountId<AccountId, Deriver>
 {
     fn convert(location: MultiLocation) -> Result<AccountId, MultiLocation> {
         let id = match location.clone() {
             MultiLocation {
-                parents: 1,
+                parents: _,
                 interior:
-                    Junctions::X2(Junction::Parachain(para_id), Junction::Plurality { id, part }),
-            } => PluralityDeriver::derive_account(para_id, id, part).ok_or(location)?,
+                    Junctions::X3(
+                        Junction::Parachain(para_id),
+                        Junction::PalletInstance(pallet_index),
+                        Junction::GeneralIndex(id),
+                    ),
+            } => Deriver::derive_account(para_id, pallet_index, id).ok_or(location)?,
             _ => return Err(location),
         };
         Ok(id)
     }
 }
+
+pub type TinkernetMultisigAsAccountId<AccountId> =
+    PalletInstanceGeneralIndexAsAccountId<AccountId, TinkernetMultisigAccountIdDeriver<AccountId>>;

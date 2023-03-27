@@ -2,7 +2,6 @@ use codec::{Decode, Encode};
 use core::marker::PhantomData;
 use frame_support::{sp_runtime::traits::TrailingZeroInput, traits::OriginTrait};
 use sp_core::H256;
-use xcm::latest::{BodyId, BodyPart};
 
 pub fn derive_tinkernet_multisig(index: u32) -> [u8; 32] {
     (
@@ -15,54 +14,46 @@ pub fn derive_tinkernet_multisig(index: u32) -> [u8; 32] {
         .using_encoded(sp_io::hashing::blake2_256)
 }
 
-pub trait ParachainPluralityOriginDeriver<Origin> {
-    fn derive_account(para_id: u32, id: BodyId, part: BodyPart) -> Option<Origin>;
+pub trait ParachainPalletGeneralIndexOriginDeriver<Origin> {
+    fn derive_account(para_id: u32, pallet_index: u8, id: u128) -> Option<Origin>;
 }
 
-pub trait ParachainPluralityAccountIdDeriver<AccountId> {
-    fn derive_account(para_id: u32, id: BodyId, part: BodyPart) -> Option<AccountId>;
+pub trait ParachainPalletGeneralIndexAccountIdDeriver<AccountId> {
+    fn derive_account(para_id: u32, palelt_index: u8, id: u128) -> Option<AccountId>;
 }
 
-pub struct TinkernetPluralityAccountIdDeriver<AccountId>(PhantomData<AccountId>);
-impl<AccountId: From<[u8; 32]> + Decode> ParachainPluralityAccountIdDeriver<AccountId>
-    for TinkernetPluralityAccountIdDeriver<AccountId>
+pub struct TinkernetMultisigAccountIdDeriver<AccountId>(PhantomData<AccountId>);
+impl<AccountId: From<[u8; 32]> + Decode> ParachainPalletGeneralIndexAccountIdDeriver<AccountId>
+    for TinkernetMultisigAccountIdDeriver<AccountId>
 {
-    fn derive_account(para_id: u32, id: BodyId, part: BodyPart) -> Option<AccountId> {
-        if para_id == 2125 {
-            match (id, part) {
-                (BodyId::Index(index), BodyPart::Voice) => Some(
-                    AccountId::decode(&mut TrailingZeroInput::new(&derive_tinkernet_multisig(
-                        index,
-                    )))
-                    .expect("infinite length input; no invalid inputs for type; qed"),
-                ),
-
-                _ => None,
-            }
+    fn derive_account(para_id: u32, pallet_index: u8, id: u128) -> Option<AccountId> {
+        if para_id == 2125 && pallet_index == 71 {
+            Some(
+                AccountId::decode(&mut TrailingZeroInput::new(&derive_tinkernet_multisig(
+                    id as u32,
+                )))
+                .expect("infinite length input; no invalid inputs for type; qed"),
+            )
         } else {
             None
         }
     }
 }
 
-pub struct TinkernetPluralitySignedDeriver<Origin>(PhantomData<Origin>);
-impl<Origin: OriginTrait> ParachainPluralityOriginDeriver<Origin>
-    for TinkernetPluralitySignedDeriver<Origin>
+pub struct TinkernetMultisigSignedDeriver<Origin>(PhantomData<Origin>);
+impl<Origin: OriginTrait> ParachainPalletGeneralIndexOriginDeriver<Origin>
+    for TinkernetMultisigSignedDeriver<Origin>
 where
     Origin::AccountId: Decode + From<[u8; 32]>,
 {
-    fn derive_account(para_id: u32, id: BodyId, part: BodyPart) -> Option<Origin> {
-        if para_id == 2125 {
-            match (id, part) {
-                (BodyId::Index(index), BodyPart::Voice) => Some(Origin::signed(
-                    Origin::AccountId::decode(&mut TrailingZeroInput::new(
-                        &derive_tinkernet_multisig(index),
-                    ))
-                    .expect("infinite length input; no invalid inputs for type; qed"),
-                )),
-
-                _ => None,
-            }
+    fn derive_account(para_id: u32, pallet_index: u8, id: u128) -> Option<Origin> {
+        if para_id == 2125 && pallet_index == 71 {
+            Some(Origin::signed(
+                Origin::AccountId::decode(&mut TrailingZeroInput::new(&derive_tinkernet_multisig(
+                    id as u32,
+                )))
+                .expect("infinite length input; no invalid inputs for type; qed"),
+            ))
         } else {
             None
         }

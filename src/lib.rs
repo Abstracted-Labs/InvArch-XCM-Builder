@@ -4,3 +4,7 @@ pub mod barriers;
 pub mod derivers;
 pub mod location_conversion;
 pub mod origin_conversion;
+
+pub use barriers::AllowPaidTinkernetMultisig;
+pub use location_conversion::TinkernetMultisigAsAccountId;
+pub use origin_conversion::DeriveOriginFromTinkernetMultisig;

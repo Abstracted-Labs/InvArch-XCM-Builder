@@ -1,7 +1,6 @@
 use core::marker::PhantomData;
 use frame_support::{ensure, traits::Contains};
-
-use xcm::latest::{
+use xcm::v2::{
     Instruction, Junction, Junctions, MultiLocation, Weight,
     WeightLimit::{Limited, Unlimited},
     Xcm,
@@ -74,8 +73,14 @@ impl Contains<MultiLocation> for TinkernetMultisigMultiLocation {
             t,
             MultiLocation {
                 parents: 1,
-                interior: Junctions::X2(Junction::Parachain(2125), Junction::Plurality { .. })
+                interior: Junctions::X3(
+                    Junction::Parachain(2125),
+                    Junction::PalletInstance(71),
+                    Junction::GeneralIndex(_)
+                )
             }
         )
     }
 }
+
+pub type AllowPaidTinkernetMultisig = AllowPaidDescendedOriginFrom<TinkernetMultisigMultiLocation>;
