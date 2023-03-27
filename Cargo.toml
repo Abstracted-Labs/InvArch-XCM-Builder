@@ -9,12 +9,12 @@ codec = { package = "parity-scale-codec", version = "3.0.0", default-features = 
 log = { version = "0.4.14", default-features = false }
 
 
-xcm = { git = "https://github.com/paritytech/polkadot", default-features = false, tag = "v0.9.30" }
-xcm-executor = { git = "https://github.com/paritytech/polkadot", default-features = false, tag = "v0.9.30" }
+xcm = { git = "https://github.com/paritytech/polkadot", default-features = false, tag = "v0.9.31" }
+xcm-executor = { git = "https://github.com/paritytech/polkadot", default-features = false, tag = "v0.9.31" }
 
-frame-support = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.30" }
-sp-core = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.30" }
-sp-io = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.30" }
+frame-support = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.31" }
+sp-core = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.31" }
+sp-io = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.31" }
 
 [features]
 default = ["std"]
