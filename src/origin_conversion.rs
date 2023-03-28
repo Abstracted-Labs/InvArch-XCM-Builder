@@ -1,7 +1,7 @@
 use super::derivers::{ParachainPalletGeneralIndexOriginDeriver, TinkernetMultisigSignedDeriver};
 use core::marker::PhantomData;
 use frame_support::traits::OriginTrait;
-use xcm::v2::{Junction, Junctions, MultiLocation, OriginKind};
+use xcm::v3::{Junction, Junctions, MultiLocation, OriginKind};
 use xcm_executor::traits::ConvertOrigin;
 
 pub struct DeriveOriginFromPalletInstanceGeneralIndex<Origin, Deriver>(

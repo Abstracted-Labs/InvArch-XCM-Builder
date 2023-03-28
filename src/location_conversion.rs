@@ -2,7 +2,7 @@ use super::derivers::{
     ParachainPalletGeneralIndexAccountIdDeriver, TinkernetMultisigAccountIdDeriver,
 };
 use core::marker::PhantomData;
-use xcm::v2::{Junction, Junctions, MultiLocation};
+use xcm::v3::{Junction, Junctions, MultiLocation};
 use xcm_executor::traits::Convert;
 
 pub struct PalletInstanceGeneralIndexAsAccountId<AccountId, Deriver>(
@@ -28,6 +28,10 @@ impl<
             _ => return Err(location),
         };
         Ok(id)
+    }
+
+    fn reverse(value: AccountId) -> Result<MultiLocation, AccountId> {
+        Err(value)
     }
 }
 
