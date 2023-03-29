@@ -1,5 +1,5 @@
 use frame_support::traits::Contains;
-use xcm::v2::{Junction, Junctions, MultiLocation};
+use xcm::v3::{Junction, Junctions, MultiLocation};
 
 pub struct TinkernetMultisigMultiLocation;
 impl Contains<MultiLocation> for TinkernetMultisigMultiLocation {
@@ -7,7 +7,7 @@ impl Contains<MultiLocation> for TinkernetMultisigMultiLocation {
         matches!(
             t,
             MultiLocation {
-                parents: 1,
+                parents: _,
                 interior: Junctions::X3(
                     Junction::Parachain(2125),
                     Junction::PalletInstance(71),

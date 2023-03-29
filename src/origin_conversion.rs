@@ -17,11 +17,6 @@ where
         kind: OriginKind,
     ) -> Result<Origin, MultiLocation> {
         let origin = origin.into();
-        log::error!(
-              target: "xcm::origin_conversion",
-            "DeriveOriginFromPlurality origin: {:?}, kind: {:?}",
-              origin, kind,
-        );
         match (kind, origin.clone()) {
             (
                 OriginKind::Native,
