@@ -9,8 +9,6 @@ pub struct DeriveOriginFromPalletInstanceGeneralIndex<Origin, Deriver>(
 );
 impl<Origin: OriginTrait, Deriver: ParachainPalletGeneralIndexOriginDeriver<Origin>>
     ConvertOrigin<Origin> for DeriveOriginFromPalletInstanceGeneralIndex<Origin, Deriver>
-where
-    Origin::AccountId: From<[u8; 32]>,
 {
     fn convert_origin(
         origin: impl Into<MultiLocation>,

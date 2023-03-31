@@ -8,10 +8,8 @@ use xcm_executor::traits::Convert;
 pub struct PalletInstanceGeneralIndexAsAccountId<AccountId, Deriver>(
     PhantomData<(AccountId, Deriver)>,
 );
-impl<
-        AccountId: From<[u8; 32]> + Clone,
-        Deriver: ParachainPalletGeneralIndexAccountIdDeriver<AccountId>,
-    > Convert<MultiLocation, AccountId>
+impl<AccountId: Clone, Deriver: ParachainPalletGeneralIndexAccountIdDeriver<AccountId>>
+    Convert<MultiLocation, AccountId>
     for PalletInstanceGeneralIndexAsAccountId<AccountId, Deriver>
 {
     fn convert(location: MultiLocation) -> Result<AccountId, MultiLocation> {

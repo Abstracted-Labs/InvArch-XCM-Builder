@@ -23,7 +23,7 @@ pub trait ParachainPalletGeneralIndexAccountIdDeriver<AccountId> {
 }
 
 pub struct TinkernetMultisigAccountIdDeriver<AccountId>(PhantomData<AccountId>);
-impl<AccountId: From<[u8; 32]> + Decode> ParachainPalletGeneralIndexAccountIdDeriver<AccountId>
+impl<AccountId: Decode> ParachainPalletGeneralIndexAccountIdDeriver<AccountId>
     for TinkernetMultisigAccountIdDeriver<AccountId>
 {
     fn derive_account(para_id: u32, pallet_index: u8, id: u128) -> Option<AccountId> {
@@ -44,7 +44,7 @@ pub struct TinkernetMultisigSignedDeriver<Origin>(PhantomData<Origin>);
 impl<Origin: OriginTrait> ParachainPalletGeneralIndexOriginDeriver<Origin>
     for TinkernetMultisigSignedDeriver<Origin>
 where
-    Origin::AccountId: Decode + From<[u8; 32]>,
+    Origin::AccountId: Decode,
 {
     fn derive_account(para_id: u32, pallet_index: u8, id: u128) -> Option<Origin> {
         if para_id == 2125 && pallet_index == 71 {
