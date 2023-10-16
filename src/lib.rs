@@ -20,12 +20,12 @@ mod tests {
         Junctions::X3,
         MultiLocation,
     };
-    use xcm_executor::traits::Convert;
+    use xcm_executor::traits::ConvertLocation;
 
     #[test]
     fn accountid32() {
         assert_eq!(
-            TinkernetMultisigAsAccountId::<AccountId32>::convert(MultiLocation {
+            TinkernetMultisigAsAccountId::<AccountId32>::convert_location(&MultiLocation {
                 parents: 1,
                 interior: X3(Parachain(2125), PalletInstance(71), GeneralIndex(0)),
             })
@@ -39,7 +39,7 @@ mod tests {
     #[test]
     fn accountid20() {
         assert_eq!(
-            TinkernetMultisigAsAccountId::<AccountId20>::convert(MultiLocation {
+            TinkernetMultisigAsAccountId::<AccountId20>::convert_location(&MultiLocation {
                 parents: 1,
                 interior: X3(Parachain(2125), PalletInstance(71), GeneralIndex(1)),
             })

@@ -15,7 +15,7 @@ impl<Origin: OriginTrait, Deriver: ParachainPalletGeneralIndexOriginDeriver<Orig
         kind: OriginKind,
     ) -> Result<Origin, MultiLocation> {
         let origin = origin.into();
-        match (kind, origin.clone()) {
+        match (kind, origin) {
             (
                 OriginKind::Native,
                 MultiLocation {
